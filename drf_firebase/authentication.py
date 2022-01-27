@@ -4,6 +4,10 @@ from firebase_admin import auth as firebase_auth
 from typing import Tuple, Dict
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import get_user_model
+import logging
+from . import __title__
+
+log = logging.getLogger(__title__)
 
 User = get_user_model()
 
@@ -30,7 +34,19 @@ class FirebaseAuthentication(authentication.TokenAuthentication):
             raise exceptions.AuthenticationFailed(e)
 
     def _decode_token(self, token: str) -> Dict:
-        pass
+        """
+        Attempt to verify JWT from Authorization header with Firebase and
+        return the decoded token
+        """
+        try:
+            decoded_token = firebase_auth.verify_id_token(
+                token, check_revoked=api_settings.FIREBASE_CHECK_JWT_REVOKED
+            )
+            log.info(f"_decode_token - decoded_token: {decoded_token}")
+            return decoded_token
+        except Exception as e:
+            log.error(f"_decode_token - Exception: {e}")
+            raise Exception(e)
 
     def _authenticate_token(self, decoded_token: Dict) -> firebase_auth.UserRecord:
         pass
