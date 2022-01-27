@@ -9,5 +9,5 @@
  <li>Firebase Storage Bucket App.
 </ul>
  
-<p align="right"><em>Special thanks to <a href="https://github.com/AbdurRehmanKhalil-arbisoft">Abdur Rehman Khalil for the <a href="https://github.com/garyburgmann/drf-firebase-auth/pull/32">PR Unique Key Gernalized in drf-firebase-auth</a></em></p>
+<p align="right"><em><sub>Special thanks to <a href="https://github.com/AbdurRehmanKhalil-arbisoft">Abdur Rehman Khalil</a> for the PR <br><a href="https://github.com/garyburgmann/drf-firebase-auth/pull/32">Unique Key Gernalized</a> in drf-firebase-auth</em></sub></p>
  
