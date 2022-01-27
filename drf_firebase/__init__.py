@@ -9,7 +9,7 @@ __url__ = 'https://github.com/fire-go/drf_firebase'
 __author__ = 'Firego'
 __author_email__ = 'samirahmane.trading@gmail.com'
 __license__ = 'MIT'
-__copyright__ = 'Firego'
+__copyright__ = 'FirePy'
 
 # Version synonym
 VERSION = __version__
