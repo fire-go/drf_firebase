@@ -7,7 +7,7 @@ def get_firebase_user_uid(firebase_user: auth.UserRecord) -> str:
     parameters:
     -firebase_user: firebase_admin.auth.UserRecord
 
-    return: Firebase Unique Identifier Aka UID
+    return: Firebase Unique ID Aka UID
     """
     try:
         if firebase_user.uid:
@@ -17,6 +17,7 @@ def get_firebase_user_uid(firebase_user: auth.UserRecord) -> str:
 
 
 def get_firebase_user_identifier(firebase_user: auth.UserRecord) -> str:
+
     try:
         return (
             firebase_user.email
