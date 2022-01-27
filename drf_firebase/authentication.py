@@ -6,6 +6,8 @@ from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import get_user_model
 import logging
 from . import __title__
+from .utils import get_firebase_user_uid, get_firebase_user_identifier
+from django.utils import timezone
 
 log = logging.getLogger(__title__)
 
@@ -68,4 +70,48 @@ class FirebaseAuthentication(authentication.TokenAuthentication):
     def _get_or_create_local_user(
         self, firebase_user: firebase_auth.UserRecord
     ) -> User:
-        pass
+        """
+        Attempts to return or create a local User from Firebase user data
+        """
+        uid = get_firebase_user_uid(firebase_user)
+        identifier = get_firebase_user_identifier(firebase_user)
+        log.info(f"_get_or_create_local_user: creating... - email/phone: {identifier}")
+        user = None
+        if User.objects.filter(username=uid).exists():
+            """
+            Update User.last_login field
+            """
+            user = User.objects.get(username=uid)
+            log.info(f"_get_or_create_local_user - user.is_active: {user.is_active}")
+            if not user.is_active:
+                raise Exception("User account is not currently active.")
+            user.last_login = timezone.now()
+            user.save()
+        else:
+            """
+            Create User object
+            """
+            log.error(
+                f'_get_or_create_local_user - Creating local User with uid "{identifier}" from Firebase authentication table'
+            )
+            if not api_settings.FIREBASE_CREATE_LOCAL_USER:
+                raise Exception("User is not registered to the application.")
+            username = api_settings.FIREBASE_USERNAME_MAPPING_FUNC(firebase_user)
+            log.info(
+                f"_get_or_create_local_user - Creating user with the following username: {uid}"
+            )
+            try:
+                user = User.objects.create_user(username=uid, email=identifier)
+                user.last_login = timezone.now()
+                if (
+                    api_settings.FIREBASE_ATTEMPT_CREATE_WITH_DISPLAY_NAME
+                    and firebase_user.display_name is not None
+                ):
+                    display_name = firebase_user.display_name.split(" ")
+                    if len(display_name) == 2:
+                        user.first_name = display_name[0]
+                        user.last_name = display_name[1]
+                user.save()
+            except Exception as e:
+                raise Exception(e)
+        return user
