@@ -7,7 +7,7 @@ from rest_framework.settings import APISettings
 
 from .utils import map_firebase_uid_to_username
 
-USER_SETTINGS = getattr(settings, "DRF_FIREBASE_AUTH", None)
+USER_SETTINGS = getattr(settings, "DRF_FIREBASE", None)
 
 DEFAULTS = {
     # allow anonymous requests without Authorization header set
