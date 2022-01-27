@@ -9,6 +9,15 @@ User = get_user_model()
 
 
 class FirebaseAuthentication(authentication.TokenAuthentication):
+    """
+    Firebase token based authentication.
+    Clients should authenticate by passing the token keyword in the "Authorization"
+    HTTP header, prepended with the string "Keyword " mentionned in the environment 
+    variable FIREBASE_AUTH_HEADER_PREFIX which has the default value "Bearer ".  
+    For example:
+        -Authorization: Bearer 401f7ac837da42b97f613d789819ff93537bee6a
+    """
+
     keyword = api_settings.FIREBASE_AUTH_HEADER_PREFIX
 
     def authenticate_credentials(self, token: str) -> Tuple[AnonymousUser, Dict]:
