@@ -17,7 +17,11 @@ def get_firebase_user_uid(firebase_user: auth.UserRecord) -> str:
 
 
 def get_firebase_user_identifier(firebase_user: auth.UserRecord) -> str:
-
+    """
+    parameters:
+    -firebase_user: firebase_admin.auth.UserRecord
+    returns: Firebase identifier -> email or phonenumber either direct email/phone numbers sign in or from the providers; e.g Facebook
+    """
     try:
         return (
             firebase_user.email
