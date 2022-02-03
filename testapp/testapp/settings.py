@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-xh)z2%fhaz_ui9-9(j4fua*!njl=xyo8_a2$4)*f!xm$3n!_x2"
+SECRET_KEY = ""
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "drf_firebase_auth",
 ]
 
 MIDDLEWARE = [
@@ -99,6 +101,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Rest Framework and Authentication
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "drf_firebase_auth.authentication.FirebaseAuthentication",
+    ]
+}
+
+DRF_FIREBASE_AUTH = {
+    # path to JSON file with firebase secrets
+    "FIREBASE_SERVICE_ACCOUNT_KEY": os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"),
+    # allow creation of new local user in db
+    "FIREBASE_CREATE_LOCAL_USER": True,
+    # attempt to split firebase user.display_name and set local user
+    # first_name and last_name
+    "FIREBASE_ATTEMPT_CREATE_WITH_DISPLAY_NAME": True,
+    # commonly JWT or Bearer (e.g. JWT <token>)
+    "FIREBASE_AUTH_HEADER_PREFIX": "Bearer",
+    # verify that JWT has not been revoked
+    "FIREBASE_CHECK_JWT_REVOKED": True,
+    # require that firebase user.email_verified is True
+    "FIREBASE_AUTH_EMAIL_VERIFICATION": False,
+    # 'FIREBASE_USERNAME_MAPPING_FUNC': False
+}
+
+FIREBASE_DRF_FIREBASE_AUTH_API_KEY = os.getenv("FIREBASE_DRF_FIREBASE_AUTH_API_KEY")
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
