@@ -27,6 +27,9 @@ class FirebaseAuthentication(authentication.TokenAuthentication):
     keyword = api_settings.FIREBASE_AUTH_HEADER_PREFIX
 
     def authenticate_credentials(self, token: str) -> Tuple[AnonymousUser, Dict]:
+        """
+        Override authenticate_credentials function from the inherited authentication.TokenAuthentication class
+        """
         try:
             decoded_token = self._decode_token(token)
             firebase_user = self._authenticate_token(decoded_token)
