@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 from rest_framework.settings import APISettings
 
-from .utils import map_firebase_uid_to_username
+from .utils import get_firebase_user_uid
 
 USER_SETTINGS = getattr(settings, "DRF_FIREBASE", None)
 
@@ -33,7 +33,7 @@ DEFAULTS = {
     "STORAGE_BUCKET": os.getenv("STORAGE_BUCKET", {}),
     # function should accept firebase_admin.auth.UserRecord as argument
     # and return str
-    "FIREBASE_USERNAME_MAPPING_FUNC": map_firebase_uid_to_username,
+    "FIREBASE_USERNAME_MAPPING_FUNC": get_firebase_user_uid,
 }
 
 # List of settings that may be in string import notation.
