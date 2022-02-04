@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "drf_firebase_auth",
+    "drf_firebase",
 ]
 
 MIDDLEWARE = [
@@ -106,11 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
-        "drf_firebase_auth.authentication.FirebaseAuthentication",
+        "drf_firebase.authentication.FirebaseAuthentication",
     ]
 }
 
-DRF_FIREBASE_AUTH = {
+DRF_FIREBASE = {
     # path to JSON file with firebase secrets
     "FIREBASE_SERVICE_ACCOUNT_KEY": os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"),
     # allow creation of new local user in db
