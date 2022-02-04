@@ -8,11 +8,19 @@ import logging
 from . import __title__
 from .utils import get_firebase_user_uid, get_firebase_user_identifier
 from django.utils import timezone
+import firebase_admin
+from firebase_admin import auth as firebase_auth
 
 log = logging.getLogger(__title__)
 
 User = get_user_model()
 
+firebase_credentials = firebase_admin.credentials.Certificate(
+    api_settings.FIREBASE_SERVICE_ACCOUNT_KEY
+)
+firebase = firebase_admin.initialize_app(
+    firebase_credentials, api_settings.STORAGE_BUCKET
+)
 
 class FirebaseAuthentication(authentication.TokenAuthentication):
     """
